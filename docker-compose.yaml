@@ -1,0 +1,58 @@
+version: '3.5'
+
+services:
+  postgres_kc:
+    image: postgres:14.7
+    environment:
+      POSTGRES_DB: keycloak
+      POSTGRES_USER: keycloak
+      POSTGRES_PASSWORD: password
+    networks:
+      - clevertec_ntwrk
+  keycloak:
+    image: quay.io/keycloak/keycloak:legacy
+    environment:
+      DB_VENDOR: POSTGRES
+      DB_ADDR: postgres_kc
+      DB_DATABASE: keycloak
+      DB_USER: keycloak
+      DB_SCHEMA: public
+      DB_PASSWORD: password
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: admin
+    volumes:
+      - ./keycloak-realm:/tmp/realm-import
+    command:
+      - "-Dkeycloak.import=/tmp/realm-import/realm-export.json"
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres_kc
+    networks:
+      - clevertec_ntwrk
+
+  kc_demo:
+    build: kc_demo
+    image: kc_demo-1.0.0
+    ports:
+      - "80:8081"
+    depends_on:
+      - db
+      - keycloak
+    restart: always
+    networks:
+      - clevertec_ntwrk
+  db:
+    image: postgres:14.7
+    restart: always
+    environment:
+      POSTGRES_DB: kc_employees
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5433:5432"
+    networks:
+      - clevertec_ntwrk
+networks:
+  clevertec_ntwrk:
+    name: clevertec_ntwrk
