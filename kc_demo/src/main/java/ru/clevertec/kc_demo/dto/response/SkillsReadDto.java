@@ -1,19 +1,13 @@
 package ru.clevertec.kc_demo.dto.response;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Value;
 
-import java.time.Instant;
-
-@Data
+@Value
 @Builder(setterPrefix = "set")
-@NoArgsConstructor @AllArgsConstructor
 public class SkillsReadDto {
 
-    private Long id;
-
-    private String name;
+    Long id;
+    String name;
 
 }

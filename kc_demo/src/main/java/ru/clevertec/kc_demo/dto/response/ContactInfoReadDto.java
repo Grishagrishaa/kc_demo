@@ -1,21 +1,16 @@
 package ru.clevertec.kc_demo.dto.response;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Value;
 
-import java.time.Instant;
-
-@Data
+@Value
 @Builder(setterPrefix = "set")
-@NoArgsConstructor @AllArgsConstructor
 public class ContactInfoReadDto {
 
-    private Long id;
+    Long id;
 
-    private String email;
-    private String phone;
-    private CityReadDto city;
+    String email;
+    String phone;
+    CityReadDto city;
 
 }

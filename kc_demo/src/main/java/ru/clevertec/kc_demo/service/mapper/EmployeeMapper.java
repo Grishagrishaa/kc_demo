@@ -14,6 +14,7 @@ import ru.clevertec.kc_demo.repository.api.CityRepository;
 import ru.clevertec.kc_demo.repository.api.ContactInfoRepository;
 import ru.clevertec.kc_demo.repository.api.DepartmentRepository;
 import ru.clevertec.kc_demo.repository.api.SkillsRepository;
+import ru.clevertec.kc_demo.repository.entity.Address;
 import ru.clevertec.kc_demo.repository.entity.Employee;
 
 import java.util.stream.Collectors;

@@ -1,21 +1,18 @@
 package ru.clevertec.kc_demo.dto.request;
 
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Value;
 
-@Data
+@Value
 @Builder(setterPrefix = "set")
-@NoArgsConstructor @AllArgsConstructor
 public class DepartmentCreateDto {
 
     @Size(min = 2, max = 25)
-    private String name;
+    String name;
 
-    @NotNull
-    private CityCreateDto city;
+    @Valid
+    CityCreateDto city;
 
 }

@@ -1,21 +1,15 @@
 package ru.clevertec.kc_demo.dto.response;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import ru.clevertec.kc_demo.repository.entity.City;
+import lombok.Value;
 
-import java.time.Instant;
-
-@Data
+@Value
 @Builder(setterPrefix = "set")
-@NoArgsConstructor @AllArgsConstructor
 public class DepartmentReadDto {
 
-    private Long id;
+    Long id;
 
-    private String name;
-    private CityReadDto city;
+    String name;
+    CityReadDto city;
 
 }

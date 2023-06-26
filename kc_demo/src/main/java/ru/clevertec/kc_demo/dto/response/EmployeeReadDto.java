@@ -1,33 +1,30 @@
 package ru.clevertec.kc_demo.dto.response;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Value;
 
 import java.time.Instant;
 import java.util.Set;
 import java.util.UUID;
 
-@Data
+@Value
 @Builder(setterPrefix = "set")
-@NoArgsConstructor @AllArgsConstructor
 public class EmployeeReadDto {
 
-    private UUID id;
-    private Instant createdDate;
+    UUID id;
+    Instant createdDate;
 
-    private String name;
-    private String lastname;
-    private Integer age;
-    private Long salary;
+    String name;
+    String lastname;
+    Integer age;
+    Long salary;
 
-    private AddressReadDto address;
+    AddressReadDto address;
 
-    private Set<SkillsReadDto> skills;
+    Set<SkillsReadDto> skills;
 
-    private DepartmentReadDto department;
+    DepartmentReadDto department;
 
-    private ContactInfoReadDto contactInfo;
+    ContactInfoReadDto contactInfo;
 
 }
