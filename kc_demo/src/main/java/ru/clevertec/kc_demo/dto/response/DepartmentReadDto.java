@@ -8,7 +8,6 @@ import lombok.Value;
 public class DepartmentReadDto {
 
     Long id;
-
     String name;
     CityReadDto city;
 

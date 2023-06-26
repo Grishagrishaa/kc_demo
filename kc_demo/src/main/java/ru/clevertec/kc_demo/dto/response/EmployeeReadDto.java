@@ -13,18 +13,13 @@ public class EmployeeReadDto {
 
     UUID id;
     Instant createdDate;
-
     String name;
     String lastname;
     Integer age;
     Long salary;
-
     AddressReadDto address;
-
     Set<SkillsReadDto> skills;
-
     DepartmentReadDto department;
-
     ContactInfoReadDto contactInfo;
 
 }

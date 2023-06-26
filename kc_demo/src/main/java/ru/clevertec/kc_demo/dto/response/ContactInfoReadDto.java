@@ -8,7 +8,6 @@ import lombok.Value;
 public class ContactInfoReadDto {
 
     Long id;
-
     String email;
     String phone;
     CityReadDto city;

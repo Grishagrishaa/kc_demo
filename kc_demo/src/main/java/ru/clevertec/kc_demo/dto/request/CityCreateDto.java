@@ -10,7 +10,6 @@ public class CityCreateDto {
 
     @Size(min = 2, max = 25)
     String name;
-
     Long population;
 
 }
