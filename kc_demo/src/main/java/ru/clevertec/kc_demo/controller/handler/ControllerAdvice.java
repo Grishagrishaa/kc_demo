@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import org.postgresql.util.PSQLException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -30,71 +31,52 @@ public class ControllerAdvice extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ErrorMessage> handle(IllegalArgumentException e, HttpServletRequest req){
-        return ResponseEntity.badRequest().body(ErrorMessage.builder()
-                .message(e.getMessage())
-                .status(BAD_REQUEST)
-                .uri(req.getRequestURI())
-                .build());
+        return ResponseEntity
+                .badRequest()
+                .body(buildErrorMessage(e.getMessage(), BAD_REQUEST, req.getRequestURI()));
+
     }
 
     @ExceptionHandler(PSQLException.class)
     public ResponseEntity<ErrorMessage> handle(PSQLException e, HttpServletRequest req) {
-        return ResponseEntity.badRequest().body(ErrorMessage.builder()
-                .message(e.getServerErrorMessage().getDetail())
-                .status(BAD_REQUEST)
-                .uri(req.getRequestURI())
-                .build());
+        return ResponseEntity
+                .badRequest()
+                .body(buildErrorMessage(e.getServerErrorMessage().getDetail(), BAD_REQUEST, req.getRequestURI()));
     }
 
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<ErrorMessage> handle(EntityNotFoundException e, HttpServletRequest req){
-        return ResponseEntity.status(NO_CONTENT).body(ErrorMessage.builder()
-                .message("Entity not found")
+        return ResponseEntity
                 .status(NO_CONTENT)
-                .uri(req.getRequestURI())
-                .build());
+                .body(buildErrorMessage("Entity not found", NO_CONTENT, req.getRequestURI()));
     }
 
     @ExceptionHandler(OptimisticLockException.class)
     public ResponseEntity<ErrorMessage> handle(OptimisticLockException e, HttpServletRequest req){
-        return ResponseEntity.status(CONFLICT).body(ErrorMessage.builder()
-                .message(e.getMessage())
+        return ResponseEntity
                 .status(CONFLICT)
-                .uri(req.getRequestURI())
-                .build());
+                .body(buildErrorMessage(e.getMessage(), CONFLICT, req.getRequestURI()));
     }
 
 
     @ExceptionHandler(ConnectException.class)
     public ResponseEntity<ErrorMessage> handle(ConnectException e, HttpServletRequest req){
-        return ResponseEntity.internalServerError().body(ErrorMessage.builder()
-                .message("SERVICE ISN'T RESPONDING")
-                .status(INTERNAL_SERVER_ERROR)
-                .uri(req.getRequestURI())
-                .build());
+        return ResponseEntity
+                .internalServerError()
+                .body(buildErrorMessage("SERVICE ISN'T RESPONDING", INTERNAL_SERVER_ERROR, req.getRequestURI()));
     }
 
     @ExceptionHandler(UsernameNotFoundException.class)
     public ResponseEntity<ErrorMessage> handle(UsernameNotFoundException e, HttpServletRequest req){
-        return ResponseEntity.badRequest().body(ErrorMessage.builder()
-                .message(e.getMessage())
-                .status(BAD_REQUEST)
-                .uri(req.getRequestURI())
-                .build());
+        return ResponseEntity
+                .badRequest()
+                .body(buildErrorMessage(e.getMessage(), BAD_REQUEST, req.getRequestURI()));
     }
-
 
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<StructuredError> handle(ConstraintViolationException e, HttpServletRequest req){
-        return ResponseEntity.badRequest().body(StructuredError.builder()
-                .errors(buildErrorMessages(e.getConstraintViolations()))
-                .status(BAD_REQUEST)
-                .uri(req.getRequestURI())
-                .build());
-    }
 
-    private Set<ErrorMessage> buildErrorMessages(Set<ConstraintViolation<?>> violations) {
-        return violations.stream()
+        Set<ErrorMessage> errorMessages = e.getConstraintViolations().stream()
                 .map(violation -> ErrorMessage.builder()
                         .uri(StreamSupport.stream(violation.getPropertyPath().spliterator(), false)
                                 .reduce((first, second) -> second)
@@ -103,5 +85,19 @@ public class ControllerAdvice extends ResponseEntityExceptionHandler {
                         .message(violation.getMessage())
                         .build())
                 .collect(toSet());
+
+        return ResponseEntity.badRequest().body(StructuredError.builder()
+                .errors(errorMessages)
+                .status(BAD_REQUEST)
+                .uri(req.getRequestURI())
+                .build());
+    }
+
+    private ErrorMessage buildErrorMessage(String message, HttpStatus status, String uri){
+        return ErrorMessage.builder()
+                .message(message)
+                .status(status)
+                .uri(uri)
+                .build();
     }
 }

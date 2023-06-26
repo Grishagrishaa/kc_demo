@@ -6,7 +6,6 @@ import ru.clevertec.kc_demo.repository.entity.Skill;
 
 import java.util.Optional;
 
-@Repository
 public interface SkillsRepository extends JpaRepository<Skill, Long>{
 
     Optional<Skill> findByName(String name);

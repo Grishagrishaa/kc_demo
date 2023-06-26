@@ -32,15 +32,6 @@ public class CityTestBuilder implements TestBuilder<City> {
         return cityTestBuilder;
     }
 
-    public static CityTestBuilder randomValues(){
-        CityTestBuilder cityTestBuilder = new CityTestBuilder();
-
-        cityTestBuilder.setId(TestUtils.getRandomLong());
-        cityTestBuilder.setName(TestUtils.getRandomString());
-        cityTestBuilder.setPopulation(TestUtils.getRandomLong());
-
-        return cityTestBuilder;
-    }
 
     public static CityReadDto toReadDto(City city){
         return CityReadDto.builder()

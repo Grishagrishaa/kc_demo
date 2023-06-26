@@ -29,15 +29,6 @@ public class SkillTestBuilder implements TestBuilder<Skill> {
         return skillTestBuilder;
     }
 
-    public static SkillTestBuilder randomValues(){
-        SkillTestBuilder skillTestBuilder = new SkillTestBuilder();
-
-        skillTestBuilder.setId(TestUtils.getRandomLong());
-        skillTestBuilder.setName(TestUtils.getRandomString());
-
-        return skillTestBuilder;
-    }
-
     public static SkillsReadDto toReadDto(Skill city){
         return SkillsReadDto.builder()
                 .setId(city.getId())

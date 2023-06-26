@@ -19,11 +19,6 @@ import ru.clevertec.kc_demo.service.mapper.EmployeeMapper;
 
 import java.util.UUID;
 
-import static ru.clevertec.kc_demo.controller.filters.EmployeeFilter.Fields.age;
-import static ru.clevertec.kc_demo.controller.filters.EmployeeFilter.Fields.lastname;
-import static ru.clevertec.kc_demo.controller.filters.EmployeeFilter.Fields.name;
-import static ru.clevertec.kc_demo.controller.filters.EmployeeFilter.Fields.salary;
-
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -36,7 +31,6 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Transactional
     public EmployeeReadDto create(@Valid EmployeeCreateDto createDto) {
         Employee employee = mapper.createDtoToEntity(createDto);
-
         return mapper.entityToReadDto(repository.save(employee));
     }
 
@@ -44,7 +38,6 @@ public class EmployeeServiceImpl implements EmployeeService {
     public EmployeeReadDto findById(UUID uuid) {
         Employee employee = repository.findById(uuid)
                 .orElseThrow(EntityNotFoundException::new);
-
         return mapper.entityToReadDto(employee);
     }
 
@@ -56,14 +49,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Page<EmployeeReadDto> findAllByEmployeeFilter(EmployeeFilter filter, Pageable pageable) {
-        Specification<Employee> spec = Specification.where(EmployeeSpec.like(name, filter.getName())
-                .and(EmployeeSpec.like(lastname, filter.getLastname()))
-                .and(EmployeeSpec.equals(age, filter.getAge()))
-                .and(EmployeeSpec.equals(salary, filter.getSalary()))
-                .and(EmployeeSpec.streetLike(filter.getStreet()))
-                .and(EmployeeSpec.departmentLike(filter.getDepartmentName()))
-                .and(EmployeeSpec.skillsIn(filter.getSkillsNames())));
-
+        Specification<Employee> spec = EmployeeSpec.hasMatchWithFilter(filter);
         return repository.findAll(spec, pageable)
                 .map(mapper::entityToReadDto);
     }
@@ -82,7 +68,9 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     @Transactional
     public void deleteById(UUID uuid) {
-        repository.findById(uuid).ifPresentOrElse(repository::delete, () -> { throw new EntityNotFoundException(); });
+        repository.findById(uuid)
+                .ifPresentOrElse(repository::delete,
+                                    () -> { throw new EntityNotFoundException(); });
     }
 
 }

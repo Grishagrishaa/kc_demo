@@ -63,26 +63,6 @@ public class EmployeeTestBuilder implements TestBuilder<Employee> {
         return employeeTestBuilder;
     }
 
-    public static EmployeeTestBuilder randomValues(){
-        EmployeeTestBuilder employeeTestBuilder = new EmployeeTestBuilder();
-
-        employeeTestBuilder.setId(UUID.randomUUID());
-        employeeTestBuilder.setCreatedDate(Instant.now());
-        employeeTestBuilder.setUpdatedDate(Instant.now());
-        employeeTestBuilder.setCreatedBy(TestUtils.getRandomString());
-        employeeTestBuilder.setModifiedBy(TestUtils.getRandomString());
-        employeeTestBuilder.setName(TestUtils.getRandomString());
-        employeeTestBuilder.setLastname(TestUtils.getRandomString());
-        employeeTestBuilder.setAge(TestUtils.getRandomInt());
-        employeeTestBuilder.setSalary(TestUtils.getRandomLong());
-        employeeTestBuilder.setAddress(AddressTestBuilder.randomValues().build());
-        employeeTestBuilder.setSkills(Set.of(SkillTestBuilder.randomValues().build()));
-        employeeTestBuilder.setDepartment(DepartmentTestBuilder.randomValues().build());
-        employeeTestBuilder.setContactInfo(ContactInfoTestBuilder.randomValues().build());
-
-        return employeeTestBuilder;
-    }
-
     public EmployeeCreateDto buildCreateDto(){
         return EmployeeCreateDto.builder()
                 .setName(this.name)

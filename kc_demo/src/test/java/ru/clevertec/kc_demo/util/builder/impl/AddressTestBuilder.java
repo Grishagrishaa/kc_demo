@@ -30,16 +30,6 @@ public class AddressTestBuilder implements TestBuilder<Address> {
         return addressTestBuilder;
     }
 
-    public static AddressTestBuilder randomValues(){
-        AddressTestBuilder addressTestBuilder = new AddressTestBuilder();
-
-        addressTestBuilder.setId(1L);
-        addressTestBuilder.setStreet("Street Sample");
-        addressTestBuilder.setCity(CityTestBuilder.randomValues().build());
-
-        return addressTestBuilder;
-    }
-
     public static AddressReadDto toReadDto(Address address){
         return AddressReadDto.builder()
                 .setId(address.getId())

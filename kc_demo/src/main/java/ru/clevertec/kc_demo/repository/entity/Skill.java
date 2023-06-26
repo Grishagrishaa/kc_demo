@@ -8,14 +8,16 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Getter @Setter
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder(setterPrefix = "set")
-@AllArgsConstructor @NoArgsConstructor
 @Table(name = "skills", schema = "employees")
 public class Skill implements BaseEntity<Long>{
 
@@ -23,7 +25,6 @@ public class Skill implements BaseEntity<Long>{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true)
     private String name;
 
 }

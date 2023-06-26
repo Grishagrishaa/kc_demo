@@ -35,17 +35,6 @@ public class ContactInfoTestBuilder implements TestBuilder<ContactInfo> {
         return contactInfoTestBuilder;
     }
 
-    public static ContactInfoTestBuilder randomValues(){
-        ContactInfoTestBuilder contactInfoTestBuilder = new ContactInfoTestBuilder();
-
-        contactInfoTestBuilder.setId(TestUtils.getRandomLong());
-        contactInfoTestBuilder.setEmail(TestUtils.getRandomString());
-        contactInfoTestBuilder.setPhone(TestUtils.getRandomString());
-        contactInfoTestBuilder.setCity(CityTestBuilder.randomValues().build());
-
-        return contactInfoTestBuilder;
-    }
-
     public static ContactInfoReadDto toReadDto(ContactInfo contactInfo){
         return ContactInfoReadDto.builder()
                 .setId(contactInfo.getId())

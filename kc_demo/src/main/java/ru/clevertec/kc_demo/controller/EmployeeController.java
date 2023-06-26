@@ -6,7 +6,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,6 +23,7 @@ import java.util.UUID;
 
 import static org.springframework.http.HttpStatus.ACCEPTED;
 import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.NO_CONTENT;
 import static org.springframework.http.HttpStatus.OK;
 
 @RestController
@@ -48,25 +48,13 @@ public class EmployeeController {
     /**
      * Retrieves an employee by their UUID.
      *
-     * @param uuid the UUID of the employee to retrieve
+     * @param id the UUID of the employee to retrieve
      * @return the ResponseEntity with the retrieved employee DTO in the response body
      */
-    @GetMapping("/{uuid}")
-    public ResponseEntity<EmployeeReadDto> findById(@PathVariable UUID uuid){
+    @GetMapping("/{id}")
+    public ResponseEntity<EmployeeReadDto> findById(@PathVariable UUID id){
         return ResponseEntity.status(OK)
-                .body(service.findById(uuid));
-    }
-
-    /**
-     * Retrieves all employees using pagination.
-     *
-     * @param pageable the Pageable object defining the pagination information
-     * @return the ResponseEntity with the page of employee DTOs in the response body
-     */
-    @GetMapping
-    public ResponseEntity<Page<EmployeeReadDto>> findAllPageable(@PageableDefault Pageable pageable){
-        return ResponseEntity.status(OK)
-                .body(service.findAllPageable(pageable));
+                .body(service.findById(id));
     }
 
     /**
@@ -76,7 +64,7 @@ public class EmployeeController {
      * @param pageable the Pageable object defining the pagination information
      * @return the ResponseEntity with the page of employee DTOs matching the filter in the response body
      */
-    @GetMapping("/filtered")
+    @GetMapping()
     public ResponseEntity<Page<EmployeeReadDto>> findAllByEmployeeFilter(@Valid EmployeeFilter filter, @PageableDefault Pageable pageable){
         return ResponseEntity.status(OK)
                 .body(service.findAllByEmployeeFilter(filter, pageable));
@@ -85,25 +73,25 @@ public class EmployeeController {
     /**
      * Updates an employee identified by their UUID.
      *
-     * @param uuid the UUID of the employee to update
+     * @param id the UUID of the employee to update
      * @return the ResponseEntity with the updated employee DTO in the response body
      */
-    @PutMapping("/{uuid}")
-    public ResponseEntity<EmployeeReadDto> updateById(@PathVariable UUID uuid, @Valid @RequestBody EmployeeCreateDto createUpdateDto){
+    @PutMapping("/{id}")
+    public ResponseEntity<EmployeeReadDto> updateById(@PathVariable UUID id, @RequestBody EmployeeCreateDto createUpdateDto){
         return ResponseEntity.status(ACCEPTED)
-                .body(service.updateById(uuid, createUpdateDto));
+                .body(service.updateById(id, createUpdateDto));
     }
 
     /**
      * Deletes an employee identified by their UUID.
      *
-     * @param uuid the UUID of the employee to delete
+     * @param id the UUID of the employee to delete
      * @return the ResponseEntity indicating a successful deletion
      */
-    @DeleteMapping("/{uuid}")
-    public ResponseEntity<?> deleteById(@PathVariable UUID uuid){
-        service.deleteById(uuid);
-        return ResponseEntity.ok().build();
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteById(@PathVariable UUID id){
+        service.deleteById(id);
+        return ResponseEntity.status(NO_CONTENT).build();
     }
 
 }

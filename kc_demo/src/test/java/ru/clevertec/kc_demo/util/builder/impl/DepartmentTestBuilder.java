@@ -31,16 +31,6 @@ public class DepartmentTestBuilder implements TestBuilder<Department> {
         return departmentTestBuilder;
     }
 
-    public static DepartmentTestBuilder randomValues(){
-        DepartmentTestBuilder departmentTestBuilder = new DepartmentTestBuilder();
-
-        departmentTestBuilder.setId(TestUtils.getRandomLong());
-        departmentTestBuilder.setName(TestUtils.getRandomString());
-        departmentTestBuilder.setCity(CityTestBuilder.randomValues().build());
-
-        return departmentTestBuilder;
-    }
-
     public static DepartmentReadDto toReadDto(Department department){
         return DepartmentReadDto.builder()
                 .setId(department.getId())

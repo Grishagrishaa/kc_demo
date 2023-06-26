@@ -3,6 +3,7 @@ package ru.clevertec.kc_demo.repository.spec;
 import jakarta.persistence.criteria.Join;
 import lombok.experimental.UtilityClass;
 import org.springframework.data.jpa.domain.Specification;
+import ru.clevertec.kc_demo.controller.filters.EmployeeFilter;
 import ru.clevertec.kc_demo.repository.entity.Address;
 import ru.clevertec.kc_demo.repository.entity.Department;
 import ru.clevertec.kc_demo.repository.entity.Employee;
@@ -10,8 +11,23 @@ import ru.clevertec.kc_demo.repository.entity.Skill;
 
 import java.util.List;
 
+import static ru.clevertec.kc_demo.controller.filters.EmployeeFilter.Fields.age;
+import static ru.clevertec.kc_demo.controller.filters.EmployeeFilter.Fields.lastname;
+import static ru.clevertec.kc_demo.controller.filters.EmployeeFilter.Fields.salary;
+
 @UtilityClass
 public class EmployeeSpec {
+
+    public static Specification<Employee> hasMatchWithFilter(EmployeeFilter filter) {
+        return Specification.allOf(
+                like(lastname, filter.getLastname()),
+                equals(age, filter.getAge()),
+                equals(salary, filter.getSalary()),
+                streetLike(filter.getStreet()),
+                departmentLike(filter.getDepartmentName()),
+                skillsIn(filter.getSkillsNames())
+        );
+    }
 
     public static Specification<Employee> like(String fieldName, String fieldValue){
         return (root, query, criteriaBuilder)
@@ -68,9 +84,7 @@ public class EmployeeSpec {
                 return criteriaBuilder.isTrue(criteriaBuilder.literal(true));
             }
 
-            Join<Employee, Skill> join = root.join("skills");
-
-            return join.get("name").in(skillsNames);
+            return root.join("skills").get("name").in(skillsNames);
         };
     }
 

@@ -1,0 +1,28 @@
+#PORT
+server:
+  port: 8081
+
+#check acces token
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:8080/auth/realms/kc_demo-realm/protocol/openid-connect/certs
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/kc_employees
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+    hibernate.ddl-auto: none
+
+  liquibase:
+    enabled: true
+    default-schema: public
+    change-log: db/changelog/db.changelog-master.yaml
+
