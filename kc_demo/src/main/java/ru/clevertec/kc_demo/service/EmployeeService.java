@@ -1,9 +1,7 @@
 package ru.clevertec.kc_demo.service;
 
-import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.validation.annotation.Validated;
 import ru.clevertec.kc_demo.controller.filters.EmployeeFilter;
 import ru.clevertec.kc_demo.dto.request.EmployeeCreateDto;
 import ru.clevertec.kc_demo.dto.response.EmployeeReadDto;
@@ -13,7 +11,6 @@ import java.util.UUID;
 /**
  * Service interface for managing employees.
  */
-@Validated
 public interface EmployeeService {
 
     /**
@@ -22,7 +19,7 @@ public interface EmployeeService {
      * @param createDto the DTO containing the data for creating an employee
      * @return the DTO representing the created employee
      */
-    EmployeeReadDto create(@Valid EmployeeCreateDto createDto);
+    EmployeeReadDto create(EmployeeCreateDto createDto);
 
     /**
      * Retrieves an employee by their UUID.
@@ -32,13 +29,6 @@ public interface EmployeeService {
      */
     EmployeeReadDto findById(UUID uuid);
 
-    /**
-     * Retrieves all employees using pagination.
-     *
-     * @param pageable the pagination information
-     * @return the DTO representing the page of employees
-     */
-    Page<EmployeeReadDto> findAllPageable(Pageable pageable);
 
     /**
      * Retrieves all employees that match the specified filter using pagination.
@@ -53,15 +43,15 @@ public interface EmployeeService {
      * Updates an employee identified by their UUID based on the provided data.
      *
      * @param uuid            the UUID of the employee to update
-     * @param createUpdateDto
+     * @param createUpdateDto - DTO with data to update
      * @return the DTO representing the updated employee
      */
-    EmployeeReadDto updateById(UUID uuid, @Valid EmployeeCreateDto createUpdateDto);
+    EmployeeReadDto updateByUuid(UUID uuid, EmployeeCreateDto createUpdateDto);
 
     /**
      * Deletes an employee identified by their UUID.
      *
      * @param uuid the UUID of the employee to delete
      */
-    void deleteById(UUID uuid);
+    void deleteByUuid(UUID uuid);
 }

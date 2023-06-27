@@ -13,13 +13,12 @@ import ru.clevertec.kc_demo.repository.api.AddressRepository;
 import ru.clevertec.kc_demo.repository.api.CityRepository;
 import ru.clevertec.kc_demo.repository.api.ContactInfoRepository;
 import ru.clevertec.kc_demo.repository.api.DepartmentRepository;
-import ru.clevertec.kc_demo.repository.api.SkillsRepository;
-import ru.clevertec.kc_demo.repository.entity.Address;
+import ru.clevertec.kc_demo.repository.api.SkillRepository;
 import ru.clevertec.kc_demo.repository.entity.Employee;
 
 import java.util.stream.Collectors;
 
-@Mapper(uses = {AddressMapper.class, CityMapper.class, ContactInfoMapper.class, DepartmentMapper.class, SkillsMapper.class},
+@Mapper(uses = {AddressMapper.class, CityMapper.class, ContactInfoMapper.class, DepartmentMapper.class, SkillMapper.class},
         imports = Collectors.class,
         componentModel = MappingConstants.ComponentModel.SPRING,
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE
@@ -35,14 +34,14 @@ public abstract class EmployeeMapper {
     @Autowired
     protected DepartmentRepository departmentRepository;
     @Autowired
-    protected SkillsRepository skillsRepository;
+    protected SkillRepository skillRepository;
 
     @Mapping(target = "address", expression = "java(addressRepository.findByStreet(createDto.getAddress().getStreet())\n" +
                                               ".orElseGet(() -> addressMapper.createDtoToEntity(createDto.getAddress())))")
     @Mapping(target = "department", expression = "java(departmentRepository.findByName(createDto.getDepartment().getName())\n" +
                                                  ".orElseGet(() -> departmentMapper.createDtoToEntity(createDto.getDepartment())))")
     @Mapping(target = "skills", expression = "java(createDto.getSkills().stream()\n" +
-                                                 ".map(skill -> skillsRepository.findByName(skill.getName()).orElseGet(() -> skillsMapper.createDtoToEntity(skill)))\n" +
+                                                 ".map(skill -> skillRepository.findByName(skill.getName()).orElseGet(() -> skillMapper.createDtoToEntity(skill)))\n" +
                                                  ".collect(Collectors.toSet()))")
     @Mapping(target = "contactInfo", expression = "java(contactInfoRepository.findByEmail(createDto.getContactInfo().getEmail())\n" +
                                                   ".orElseGet(() -> contactInfoMapper.createDtoToEntity(createDto.getContactInfo())))")

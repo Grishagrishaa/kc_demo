@@ -40,7 +40,7 @@ public class EmployeeController {
      * @return the ResponseEntity with the created employee DTO in the response body
      */
     @PostMapping
-    public ResponseEntity<EmployeeReadDto> create(@RequestBody EmployeeCreateDto createDto){
+    public ResponseEntity<EmployeeReadDto> create(@RequestBody @Valid EmployeeCreateDto createDto){
         return ResponseEntity.status(CREATED)
                 .body(service.create(createDto));
     }
@@ -77,9 +77,9 @@ public class EmployeeController {
      * @return the ResponseEntity with the updated employee DTO in the response body
      */
     @PutMapping("/{id}")
-    public ResponseEntity<EmployeeReadDto> updateById(@PathVariable UUID id, @RequestBody EmployeeCreateDto createUpdateDto){
+    public ResponseEntity<EmployeeReadDto> updateById(@PathVariable UUID id, @RequestBody @Valid EmployeeCreateDto createUpdateDto){
         return ResponseEntity.status(ACCEPTED)
-                .body(service.updateById(id, createUpdateDto));
+                .body(service.updateByUuid(id, createUpdateDto));
     }
 
     /**
@@ -90,7 +90,7 @@ public class EmployeeController {
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteById(@PathVariable UUID id){
-        service.deleteById(id);
+        service.deleteByUuid(id);
         return ResponseEntity.status(NO_CONTENT).build();
     }
 

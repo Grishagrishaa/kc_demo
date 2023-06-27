@@ -6,7 +6,7 @@ import lombok.Value;
 
 @Value
 @Builder(setterPrefix = "set")
-public class SkillsCreateDto {
+public class SkillCreateDto {
 
     @Size(min = 2, max = 25)
     String name;

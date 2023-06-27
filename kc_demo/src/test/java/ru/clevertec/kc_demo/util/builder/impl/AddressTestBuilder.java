@@ -30,18 +30,18 @@ public class AddressTestBuilder implements TestBuilder<Address> {
         return addressTestBuilder;
     }
 
-    public static AddressReadDto toReadDto(Address address){
+    public AddressReadDto buildReadDto(){
         return AddressReadDto.builder()
-                .setId(address.getId())
-                .setStreet(address.getStreet())
-                .setCity(CityTestBuilder.toReadDto(address.getCity()))
+                .setId(this.id)
+                .setStreet(this.street)
+                .setCity(CityTestBuilder.defaultValues().buildReadDto())
                 .build();
     }
 
-    public static AddressCreateDto toCreateDto(Address address){
+    public AddressCreateDto buildCreateDto(){
         return AddressCreateDto.builder()
-                .setStreet(address.getStreet())
-                .setCity(CityTestBuilder.toCreateDto(address.getCity()))
+                .setStreet(this.street)
+                .setCity(CityTestBuilder.defaultValues().buildCreateDto())
                 .build();
     }
 

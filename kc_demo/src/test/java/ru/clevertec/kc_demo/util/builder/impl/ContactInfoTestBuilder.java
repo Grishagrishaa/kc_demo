@@ -35,20 +35,20 @@ public class ContactInfoTestBuilder implements TestBuilder<ContactInfo> {
         return contactInfoTestBuilder;
     }
 
-    public static ContactInfoReadDto toReadDto(ContactInfo contactInfo){
+    public ContactInfoReadDto buildReadDto(){
         return ContactInfoReadDto.builder()
-                .setId(contactInfo.getId())
-                .setEmail(contactInfo.getEmail())
-                .setPhone(contactInfo.getPhone())
-                .setCity(CityTestBuilder.toReadDto(contactInfo.getCity()))
+                .setId(this.id)
+                .setEmail(this.email)
+                .setPhone(this.phone)
+                .setCity(CityTestBuilder.defaultValues().buildReadDto())
                 .build();
     }
 
-    public static ContactInfoCreateDto toCreateDto(ContactInfo contactInfo){
+    public ContactInfoCreateDto buildCreateDto(){
         return ContactInfoCreateDto.builder()
-                .setEmail(contactInfo.getEmail())
-                .setPhone(contactInfo.getPhone())
-                .setCity(CityTestBuilder.toCreateDto(contactInfo.getCity()))
+                .setEmail(this.email)
+                .setPhone(this.phone)
+                .setCity(CityTestBuilder.defaultValues().buildCreateDto())
                 .build();
     }
 

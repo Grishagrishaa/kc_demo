@@ -4,11 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.With;
-import ru.clevertec.kc_demo.dto.request.CityCreateDto;
-import ru.clevertec.kc_demo.dto.request.SkillsCreateDto;
-import ru.clevertec.kc_demo.dto.response.SkillsReadDto;
+import ru.clevertec.kc_demo.dto.request.SkillCreateDto;
+import ru.clevertec.kc_demo.dto.response.SkillReadDto;
 import ru.clevertec.kc_demo.repository.entity.Skill;
-import ru.clevertec.kc_demo.util.TestUtils;
 import ru.clevertec.kc_demo.util.builder.TestBuilder;
 
 @With
@@ -29,16 +27,16 @@ public class SkillTestBuilder implements TestBuilder<Skill> {
         return skillTestBuilder;
     }
 
-    public static SkillsReadDto toReadDto(Skill city){
-        return SkillsReadDto.builder()
-                .setId(city.getId())
-                .setName(city.getName())
+    public SkillReadDto buildReadDto(){
+        return SkillReadDto.builder()
+                .setId(this.id)
+                .setName(this.name)
                 .build();
     }
 
-    public static SkillsCreateDto toCreateDto(Skill skill){
-        return SkillsCreateDto.builder()
-                .setName(skill.getName())
+    public SkillCreateDto buildCreateDto(){
+        return SkillCreateDto.builder()
+                .setName(this.name)
                 .build();
     }
 

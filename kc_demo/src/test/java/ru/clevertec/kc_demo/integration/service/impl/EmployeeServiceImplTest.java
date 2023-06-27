@@ -20,7 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-class EmployeeServiceImplTest extends BaseIntegrationTest {//todo n+1 docker kc
+class EmployeeServiceImplTest extends BaseIntegrationTest {
 
     @MockBean
     private JwtDecoder jwtDecoder;
@@ -52,14 +52,6 @@ class EmployeeServiceImplTest extends BaseIntegrationTest {//todo n+1 docker kc
     }
 
     @Test
-    void findAllPageableShouldReturnCorrectPage() {
-        Page<EmployeeReadDto> actual = service
-                .findAllPageable(Pageable.unpaged());
-
-        assertThat(actual).hasSize(COUNT_OF_EMPLOYEES);
-    }
-
-    @Test
     void findAllByEmployeeFilterShouldReturnCorrectPage() {
         Page<EmployeeReadDto> actual = service
                 .findAllByEmployeeFilter(EmployeeFilter.defaultValues(), Pageable.unpaged());
@@ -73,7 +65,7 @@ class EmployeeServiceImplTest extends BaseIntegrationTest {//todo n+1 docker kc
         EmployeeCreateDto toUpdate = EmployeeTestBuilder.defaultValues().buildCreateDto();
         EmployeeReadDto notUpdated = service.findById(EMPLOYEE_UUID);
 
-        EmployeeReadDto updated = service.updateById(EMPLOYEE_UUID, toUpdate);
+        EmployeeReadDto updated = service.updateByUuid(EMPLOYEE_UUID, toUpdate);
 
         assertAll(
                 () -> assertThat(notUpdated).isNotEqualTo(toUpdate),
@@ -86,7 +78,7 @@ class EmployeeServiceImplTest extends BaseIntegrationTest {//todo n+1 docker kc
 
     @Test
     void deleteByIdShouldDeleteEntity() {
-        service.deleteById(EMPLOYEE_UUID);
+        service.deleteByUuid(EMPLOYEE_UUID);
 
         assertThatThrownBy(() -> service.findById(EMPLOYEE_UUID))
                 .isInstanceOf(EntityNotFoundException.class);

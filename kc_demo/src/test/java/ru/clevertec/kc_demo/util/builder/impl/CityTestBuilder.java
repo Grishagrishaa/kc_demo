@@ -32,19 +32,18 @@ public class CityTestBuilder implements TestBuilder<City> {
         return cityTestBuilder;
     }
 
-
-    public static CityReadDto toReadDto(City city){
+    public CityReadDto buildReadDto(){
         return CityReadDto.builder()
-                .setId(city.getId())
-                .setName(city.getName())
-                .setPopulation(city.getPopulation())
+                .setId(this.id)
+                .setName(this.name)
+                .setPopulation(this.population)
                 .build();
     }
 
-    public static CityCreateDto toCreateDto(City city){
+    public CityCreateDto buildCreateDto(){
         return CityCreateDto.builder()
-                .setName(city.getName())
-                .setPopulation(city.getPopulation())
+                .setName(this.name)
+                .setPopulation(this.population)
                 .build();
     }
 

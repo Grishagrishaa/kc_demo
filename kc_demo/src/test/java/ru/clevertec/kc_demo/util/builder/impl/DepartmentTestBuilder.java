@@ -31,18 +31,18 @@ public class DepartmentTestBuilder implements TestBuilder<Department> {
         return departmentTestBuilder;
     }
 
-    public static DepartmentReadDto toReadDto(Department department){
+    public DepartmentReadDto buildReadDto(){
         return DepartmentReadDto.builder()
-                .setId(department.getId())
-                .setName(department.getName())
-                .setCity(CityTestBuilder.toReadDto(department.getCity()))
+                .setId(this.id)
+                .setName(this.name)
+                .setCity(CityTestBuilder.defaultValues().buildReadDto())
                 .build();
     }
 
-    public static DepartmentCreateDto toCreateDto(Department department){
+    public DepartmentCreateDto buildCreateDto(){
         return DepartmentCreateDto.builder()
-                .setName(department.getName())
-                .setCity(CityTestBuilder.toCreateDto(department.getCity()))
+                .setName(this.name)
+                .setCity(CityTestBuilder.defaultValues().buildCreateDto())
                 .build();
     }
 

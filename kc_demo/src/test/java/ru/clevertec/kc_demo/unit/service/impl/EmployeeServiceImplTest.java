@@ -37,7 +37,7 @@ class EmployeeServiceImplTest {
 
     @Mock
     private EmployeeRepository repository;
-    @Spy
+    @Mock
     private EmployeeMapper mapper = Mappers.getMapper(EmployeeMapper.class);
     @InjectMocks
     private EmployeeServiceImpl service;
@@ -45,7 +45,7 @@ class EmployeeServiceImplTest {
     @Test
     void createShouldReturnReadDto() {
         Employee employee = EmployeeTestBuilder.defaultValues().build();
-        EmployeeCreateDto createDto = EmployeeTestBuilder.toCreateDto(employee);
+        EmployeeCreateDto createDto = EmployeeTestBuilder.defaultValues().buildCreateDto();
 
         doReturn(employee)
                 .when(repository).save(any());
@@ -66,10 +66,10 @@ class EmployeeServiceImplTest {
 
         doReturn(Optional.ofNullable(employee))
                 .when(repository).findById(employee.getId());
-        doReturn(EmployeeTestBuilder.toReadDto(employee))
+        doReturn(EmployeeTestBuilder.defaultValues().buildReadDto())
                 .when(mapper).entityToReadDto(employee);
 
-        EmployeeReadDto expected = EmployeeTestBuilder.toReadDto(employee);
+        EmployeeReadDto expected = EmployeeTestBuilder.defaultValues().buildReadDto();
         EmployeeReadDto actual = service.findById(employee.getId());
 
         verify(repository).findById(employee.getId());
@@ -87,24 +87,9 @@ class EmployeeServiceImplTest {
     }
 
     @Test
-    void findAllPageableShouldReturnCorrectPage() {
-        Employee employee = EmployeeTestBuilder.defaultValues().build();
-
-        doReturn(new PageImpl<>(List.of(employee)))
-                .when(repository).findAll(any(Pageable.class));
-        doReturn(EmployeeTestBuilder.defaultValues().buildReadDto())
-                .when(mapper).entityToReadDto(employee);
-
-        Page<EmployeeReadDto> actual = service.findAllPageable(Pageable.unpaged());
-        Page<EmployeeReadDto> expected = new PageImpl<>(List.of(EmployeeTestBuilder.toReadDto(employee)));
-
-        assertThat(actual.getContent()).isEqualTo(expected.getContent());
-    }
-
-    @Test
     void findAllByEmployeeFilterShouldReturnCorrectPage() {
         Employee employee = EmployeeTestBuilder.defaultValues().build();
-        EmployeeReadDto readDto = EmployeeTestBuilder.toReadDto(employee);
+        EmployeeReadDto readDto = EmployeeTestBuilder.defaultValues().buildReadDto();
 
         doReturn(new PageImpl<>(List.of(employee)))
                 .when(repository).findAll(any(Specification.class), any(Pageable.class));
@@ -127,7 +112,7 @@ class EmployeeServiceImplTest {
         doNothing()
                 .when(mapper).update(employee, updateDto);
 
-        service.updateById(employee.getId(), updateDto);
+        service.updateByUuid(employee.getId(), updateDto);
 
         verify(repository).findById(employee.getId());
         verify(repository).save(employee);
@@ -140,7 +125,7 @@ class EmployeeServiceImplTest {
         doThrow(EntityNotFoundException.class)
                 .when(repository).findById(any());
 
-        assertThatThrownBy(() -> service.updateById(any(), updateDto))
+        assertThatThrownBy(() -> service.updateByUuid(any(), updateDto))
                 .isInstanceOf(EntityNotFoundException.class);
     }
 
@@ -151,7 +136,7 @@ class EmployeeServiceImplTest {
         doReturn(Optional.of(employee))
                 .when(repository).findById(employee.getId());
 
-        service.deleteById(employee.getId());
+        service.deleteByUuid(employee.getId());
 
         verify(repository).findById(employee.getId());
         verify(repository).delete(employee);
@@ -162,7 +147,7 @@ class EmployeeServiceImplTest {
         doReturn(Optional.empty())
                 .when(repository).findById(any());
 
-        assertThatThrownBy(() -> service.deleteById(any()))
+        assertThatThrownBy(() -> service.deleteByUuid(any()))
                 .isInstanceOf(EntityNotFoundException.class);
     }
 }

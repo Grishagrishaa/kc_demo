@@ -5,7 +5,7 @@ import lombok.Value;
 
 @Value
 @Builder(setterPrefix = "set")
-public class SkillsReadDto {
+public class SkillReadDto {
 
     Long id;
     String name;

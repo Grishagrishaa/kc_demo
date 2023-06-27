@@ -18,7 +18,7 @@ public class EmployeeReadDto {
     Integer age;
     Long salary;
     AddressReadDto address;
-    Set<SkillsReadDto> skills;
+    Set<SkillReadDto> skills;
     DepartmentReadDto department;
     ContactInfoReadDto contactInfo;
 

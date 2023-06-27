@@ -27,7 +27,7 @@ public class EmployeeCreateDto {
 
     @Valid AddressCreateDto address;
 
-    @Valid Set<SkillsCreateDto> skills;
+    @Valid Set<SkillCreateDto> skills;
 
     @Valid DepartmentCreateDto department;
 

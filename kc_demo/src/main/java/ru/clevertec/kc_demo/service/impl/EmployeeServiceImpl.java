@@ -1,7 +1,6 @@
 package ru.clevertec.kc_demo.service.impl;
 
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,7 +28,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     @Transactional
-    public EmployeeReadDto create(@Valid EmployeeCreateDto createDto) {
+    public EmployeeReadDto create(EmployeeCreateDto createDto) {
         Employee employee = mapper.createDtoToEntity(createDto);
         return mapper.entityToReadDto(repository.save(employee));
     }
@@ -42,21 +41,15 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Page<EmployeeReadDto> findAllPageable(Pageable pageable) {
-        return repository.findAll(pageable)
-                .map(mapper::entityToReadDto);
-    }
-
-    @Override
     public Page<EmployeeReadDto> findAllByEmployeeFilter(EmployeeFilter filter, Pageable pageable) {
-        Specification<Employee> spec = EmployeeSpec.hasMatchWithFilter(filter);
+        Specification<Employee> spec = EmployeeSpec.buildSpec(filter);
         return repository.findAll(spec, pageable)
                 .map(mapper::entityToReadDto);
     }
 
     @Override
     @Transactional
-    public EmployeeReadDto updateById(UUID uuid, @Valid EmployeeCreateDto createUpdateDto) {
+    public EmployeeReadDto updateByUuid(UUID uuid, EmployeeCreateDto createUpdateDto) {
         Employee employee = repository.findById(uuid)
                 .orElseThrow(EntityNotFoundException::new);
 
@@ -67,7 +60,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     @Transactional
-    public void deleteById(UUID uuid) {
+    public void deleteByUuid(UUID uuid) {
         repository.findById(uuid)
                 .ifPresentOrElse(repository::delete,
                                     () -> { throw new EntityNotFoundException(); });

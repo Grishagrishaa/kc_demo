@@ -4,18 +4,18 @@ import org.mapstruct.Mapper;
 import org.mapstruct.MappingConstants;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
-import ru.clevertec.kc_demo.dto.request.SkillsCreateDto;
-import ru.clevertec.kc_demo.dto.response.SkillsReadDto;
+import ru.clevertec.kc_demo.dto.request.SkillCreateDto;
+import ru.clevertec.kc_demo.dto.response.SkillReadDto;
 import ru.clevertec.kc_demo.repository.entity.Skill;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING,
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-public interface SkillsMapper {
+public interface SkillMapper {
 
-    Skill createDtoToEntity(SkillsCreateDto createDto);
+    Skill createDtoToEntity(SkillCreateDto createDto);
 
-    SkillsReadDto entityToReadDto(Skill skill);
+    SkillReadDto entityToReadDto(Skill skill);
 
-    void update(@MappingTarget Skill Skill, SkillsCreateDto createDto);
+    void update(@MappingTarget Skill Skill, SkillCreateDto createDto);
 
 }

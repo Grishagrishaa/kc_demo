@@ -69,23 +69,10 @@ public class EmployeeTestBuilder implements TestBuilder<Employee> {
                 .setLastname(this.lastname)
                 .setAge(this.age)
                 .setSalary(this.salary)
-                .setAddress(AddressTestBuilder.toCreateDto(this.address))
-                .setSkills(this.skills.stream().map(SkillTestBuilder::toCreateDto).collect(Collectors.toSet()))
-                .setDepartment(DepartmentTestBuilder.toCreateDto(this.department))
-                .setContactInfo(ContactInfoTestBuilder.toCreateDto(this.contactInfo))
-                .build();
-    }
-
-    public static EmployeeCreateDto toCreateDto(Employee employee){
-        return EmployeeCreateDto.builder()
-                .setName(employee.getName())
-                .setLastname(employee.getLastname())
-                .setAge(employee.getAge())
-                .setSalary(employee.getSalary())
-                .setAddress(AddressTestBuilder.toCreateDto(employee.getAddress()))
-                .setSkills(employee.getSkills().stream().map(SkillTestBuilder::toCreateDto).collect(Collectors.toSet()))
-                .setDepartment(DepartmentTestBuilder.toCreateDto(employee.getDepartment()))
-                .setContactInfo(ContactInfoTestBuilder.toCreateDto(employee.getContactInfo()))
+                .setAddress(AddressTestBuilder.defaultValues().buildCreateDto())
+                .setSkills(Set.of(SkillTestBuilder.defaultValues().buildCreateDto()))
+                .setDepartment(DepartmentTestBuilder.defaultValues().buildCreateDto())
+                .setContactInfo(ContactInfoTestBuilder.defaultValues().buildCreateDto())
                 .build();
     }
 
@@ -97,28 +84,12 @@ public class EmployeeTestBuilder implements TestBuilder<Employee> {
                 .setLastname(this.lastname)
                 .setAge(this.age)
                 .setSalary(this.salary)
-                .setAddress(AddressTestBuilder.toReadDto(this.address))
-                .setSkills(this.skills.stream().map(SkillTestBuilder::toReadDto).collect(Collectors.toSet()))
-                .setDepartment(DepartmentTestBuilder.toReadDto(this.department))
-                .setContactInfo(ContactInfoTestBuilder.toReadDto(this.contactInfo))
+                .setAddress(AddressTestBuilder.defaultValues().buildReadDto())
+                .setSkills(Set.of(SkillTestBuilder.defaultValues().buildReadDto()))
+                .setDepartment(DepartmentTestBuilder.defaultValues().buildReadDto())
+                .setContactInfo(ContactInfoTestBuilder.defaultValues().buildReadDto())
                 .build();
     }
-
-    public static EmployeeReadDto toReadDto(Employee employee){
-        return EmployeeReadDto.builder()
-                .setId(employee.getId())
-                .setCreatedDate(employee.getCreatedDate())
-                .setName(employee.getName())
-                .setLastname(employee.getLastname())
-                .setAge(employee.getAge())
-                .setSalary(employee.getSalary())
-                .setAddress(AddressTestBuilder.toReadDto(employee.getAddress()))
-                .setSkills(employee.getSkills().stream().map(SkillTestBuilder::toReadDto).collect(Collectors.toSet()))
-                .setDepartment(DepartmentTestBuilder.toReadDto(employee.getDepartment()))
-                .setContactInfo(ContactInfoTestBuilder.toReadDto(employee.getContactInfo()))
-                .build();
-    }
-
 
     @Override
     public Employee build() {
